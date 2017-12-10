@@ -124,5 +124,4 @@ class GamersController
             return "Not an Administrator";
         }
     }
-
 }
