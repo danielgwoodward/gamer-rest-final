@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: iamcaptaincode
- * Date: 10/13/2016
- * Time: 8:56 AM
+ * User: dan
+ * Date:12/10/2017
+ * Time: 9:50 AM
  */
 
 require_once 'config.php';
@@ -38,6 +38,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
 
     /** ALL Gamers Functions */
 
+    //POST
     $handlePostGamer = function ($args) {
         $GamersController = new \Gamer\Controllers\GamersController();
         if (empty($json)) {
@@ -47,7 +48,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
         return $gamers;
 
     };
-
+    //PUT
     $handlePutGamer = function ($args) {
         $GamersController = new \Gamer\Controllers\GamersController();
         if (empty($json)) {
@@ -56,6 +57,27 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
         $gamers = $GamersController->updateGamer($json);
         return $gamers;
 
+    };
+
+    //GET ALL
+    $handleGetAllGamers = function () {
+        $gamersController = new \Gamer\Controllers\GamersController();
+        $gamers = $gamersController->getAllGamers();
+        return $gamers;
+    };
+
+    //GET SPECIFIC
+    $handleGetGamerId = function ($args) {
+        $gamersController = new \Gamer\Controllers\GamersController();
+        $gamers = $gamersController->getGamerByGamerID($args);
+        return $gamers;
+
+    };
+
+    $handleDeleteGamerId = function ($args) {
+        $gamersController = new \Gamer\Controllers\GamersController();
+        $gamers = $gamersController->deleteGamerByGamerID($args);
+        return $gamers;
     };
 
 
@@ -67,6 +89,9 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     /** GAMERS ROUTE */
     $r->addRoute(Methods::POST, $baseURI . '/gamers', $handlePostGamer);
     $r->addRoute(Methods::PUT, $baseURI . '/gamers', $handlePutGamer);
+    $r->addRoute(Methods::GET, $baseURI . '/gamers/admin', $handleGetAllGamers);
+    $r->addRoute(Methods::GET, $baseURI . '/gamers/admin/{GamerId:\d+}', $handleGetGamerId);
+    $r->addRoute(Methods::DELETE, $baseURI . '/gamers/admin/{GamerId:\d+}', $handleDeleteGamerId);
 
 
 

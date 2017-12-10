@@ -86,4 +86,34 @@ class Gamer implements \JsonSerializable
 
         $stmtUpdate->execute();
     }
+
+
+    public static function getAllGamers() {
+        $dbh = DatabaseConnection::getInstance();
+
+        $getAllGamers = ' SELECT * FROM Gamers';
+        $stmt = $dbh->prepare($getAllGamers);
+        $stmt->execute();
+
+        $AllGamers = $stmt->FetchAll(\PDO::FETCH_ASSOC);
+        return $AllGamers;
+    }
+
+    public function getGamerByGamerID($GamerId){
+        $dbh = DatabaseConnection::getInstance();
+        $stmtGetAll = $dbh->prepare("Select * From `gamer_api`.`Gamers` 
+                                     WHERE GamerId = :GamerId");
+        $stmtGetAll->bindParam(":GamerId", $GamerId);
+        $stmtGetAll->execute();
+
+        $AllGamers = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Gamer\Models\Gamer");
+        return $AllGamers;
+    }
+
+    public function deleteGamerByGamerID($GamerId){
+        $dbh = DatabaseConnection::getInstance();
+        $stmtHandle = $dbh->prepare("DELETE FROM `gamer_api`.`Gamers`  WHERE GamerId = :GamerId");
+        $stmtHandle->bindValue(":GamerId", $GamerId);
+        $stmtHandle->execute();
+    }
 }
