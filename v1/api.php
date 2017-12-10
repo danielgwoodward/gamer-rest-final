@@ -36,8 +36,38 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     };
 
 
+    /** ALL Gamers Functions */
+
+    $handlePostGamer = function ($args) {
+        $GamersController = new \Gamer\Controllers\GamersController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $gamers = $GamersController->buildGamer($json);
+        return $gamers;
+
+    };
+
+    $handlePutGamer = function ($args) {
+        $GamersController = new \Gamer\Controllers\GamersController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $gamers = $GamersController->updateGamer($json);
+        return $gamers;
+
+    };
+
+
+
+
     /** TOKEN ROUTE */
     $r->addRoute(Methods::POST, $baseURI . '/tokens', $handlePostToken);
+
+    /** GAMERS ROUTE */
+    $r->addRoute(Methods::POST, $baseURI . '/gamers', $handlePostGamer);
+    $r->addRoute(Methods::PUT, $baseURI . '/gamers', $handlePutGamer);
+
 
 
 
