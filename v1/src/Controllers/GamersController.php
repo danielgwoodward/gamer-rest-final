@@ -90,4 +90,39 @@ class GamersController
         }
     }
 
+    public function getAllGamers() {
+        $role = Token::getRoleFromToken();
+        if($role == Token::ROLE_FACULTY) {
+            return Gamer::getAllGamers();
+        }
+        else {
+            http_response_code(StatusCodes::UNAUTHORIZED);
+            return "Not an Administrator";
+        }
+    }
+
+    public function getGamerByGamerID($args){
+        $role = Token::getRoleFromToken();
+        if($role == Token::ROLE_FACULTY){
+
+            return Gamer::getGamerByGamerID($args['GamerId']);
+        }
+        else {
+            http_response_code(StatusCodes::UNAUTHORIZED);
+            return "Not an Administrator";
+        }
+    }
+
+    public function deleteGamerByGamerID($args){
+        $role = Token::getRoleFromToken();
+        if($role == Token::ROLE_FACULTY){
+
+            return Gamer::deleteGamerByGamerID($args['GamerId']);
+        }
+        else {
+            http_response_code(StatusCodes::UNAUTHORIZED);
+            return "Not an Administrator";
+        }
+    }
+
 }
