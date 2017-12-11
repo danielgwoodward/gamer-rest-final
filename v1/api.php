@@ -74,6 +74,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
 
     };
 
+    //DELETE
     $handleDeleteGamerId = function ($args) {
         $gamersController = new \Gamer\Controllers\GamersController();
         $gamers = $gamersController->deleteGamerByGamerID($args);
@@ -95,13 +96,35 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
 
     //PUT
     $handlePutMatchHistory = function ($args) {
-        $GamersController = new \Gamer\Controllers\MatchHistoryController();
+        $matchesController = new \Gamer\Controllers\MatchHistoryController();
         if (empty($json)) {
             $json = (object) json_decode(file_get_contents('php://input'));
         }
-        $gamers = $GamersController->updateMatch($json);
-        return $gamers;
+        $matches = $matchesController->updateMatch($json);
+        return $matches;
 
+    };
+
+    //GET ALL
+    $handleGetAllMatches = function () {
+        $matchesController = new \Gamer\Controllers\MatchHistoryController();
+        $matches = $matchesController->getAllMatches();
+        return $matches;
+    };
+
+    //GET SPECIFIC
+    $handleGetMatchId = function ($args) {
+        $matchesController = new \Gamer\Controllers\MatchHistoryController();
+        $matches = $matchesController->getMatchByMatchID($args);
+        return $matches;
+
+    };
+
+    //DELETE
+    $handleDeleteMatchId = function ($args) {
+        $matchesController = new \Gamer\Controllers\MatchHistoryController();
+        $matches = $matchesController->deleteMatchByMatchID($args);
+        return $matches;
     };
 
 
@@ -115,14 +138,17 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     /** GAMERS ROUTE */
     $r->addRoute(Methods::POST, $baseURI . '/gamers', $handlePostGamer);
     $r->addRoute(Methods::PUT, $baseURI . '/gamers', $handlePutGamer);
-    $r->addRoute(Methods::GET, $baseURI . '/gamers/admin', $handleGetAllGamers);
-    $r->addRoute(Methods::GET, $baseURI . '/gamers/admin/{GamerId:\d+}', $handleGetGamerId);
+    $r->addRoute(Methods::GET, $baseURI . '/gamers', $handleGetAllGamers);
+    $r->addRoute(Methods::GET, $baseURI . '/gamers/{GamerId:\d+}', $handleGetGamerId);
     $r->addRoute(Methods::DELETE, $baseURI . '/gamers/admin/{GamerId:\d+}', $handleDeleteGamerId);
 
     /** MatchHistory */
 
     $r->addRoute(Methods::POST, $baseURI . '/match', $handlePostMatchHistory);
     $r->addRoute(Methods::PUT, $baseURI . '/match', $handlePutMatchHistory);
+    $r->addRoute(Methods::GET, $baseURI . '/match', $handleGetAllMatches);
+    $r->addRoute(Methods::GET, $baseURI . '/match/{MatchId:\d+}', $handleGetMatchId);
+    $r->addRoute(Methods::DELETE, $baseURI . '/match/admin/{MatchId:\d+}', $handleDeleteMatchId);
 
 
 
