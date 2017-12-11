@@ -12,9 +12,7 @@ use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
-use Gamer\Http\{
-    StatusCodes
-};
+use Gamer\Http\StatusCodes;
 
 class Token
 {
