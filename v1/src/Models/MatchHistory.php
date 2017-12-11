@@ -86,5 +86,34 @@ class MatchHistory implements \JsonSerializable
         $stmtUpdate->execute();
     }
 
+    public static function getAllMatches() {
+        $dbh = DatabaseConnection::getInstance();
+
+        $getAllMatches = ' SELECT * FROM MatchHistory';
+        $stmt = $dbh->prepare($getAllMatches);
+        $stmt->execute();
+
+        $AllMatches = $stmt->FetchAll(\PDO::FETCH_ASSOC);
+        return $AllMatches;
+    }
+
+    public function getMatchByMatchID($MatchId){
+        $dbh = DatabaseConnection::getInstance();
+        $stmtGetAll = $dbh->prepare("Select * From `gamer_api`.`MatchHistory` 
+                                     WHERE MatchId = :MatchId");
+        $stmtGetAll->bindParam(":MatchId", $MatchId);
+        $stmtGetAll->execute();
+
+        $AllMatches = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Gamer\Models\MatchHistory");
+        return $AllMatches;
+    }
+
+    public function deleteMatchByMatchID($MatchId){
+        $dbh = DatabaseConnection::getInstance();
+        $stmtHandle = $dbh->prepare("DELETE FROM `gamer_api`.`MatchHistory`  WHERE MatchId = :MatchId");
+        $stmtHandle->bindValue(":MatchId", $MatchId);
+        $stmtHandle->execute();
+    }
+
 
 }
