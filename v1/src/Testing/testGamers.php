@@ -45,4 +45,125 @@ class testGamers extends TestCase {
         $this->assertNotFalse($output);
         $this->assertEquals(StatusCodes::BAD_REQUEST, Testing::getLastHTTPResponseCode());
     }
+    public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
+    {
+        $token = $this->generateToken('genericfac', 'Hello896');
+        $json = array(
+                "EXTRA" => "NODONTDOTHAT",
+                "GamerTag"=> "TheSpicyNoodle",
+                "TeamId" => "1",
+                "MainGamePlayedId" => "1",
+                "Rank" =>"Gold"
+
+        );
+        $body = json_encode($json);
+        $endpoint = "/gamers";
+        try {
+            $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
+        } catch (\Exception $err) {
+            $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
+        }
+        $this->assertNotFalse($output);
+        $this->assertEquals(StatusCodes::BAD_REQUEST, Testing::getLastHTTPResponseCode());
+    }
+
+    public function testAdminPost() //Admin should be able to POST
+    {
+        $token = $this->generateToken('genericfac', 'Hello896');
+        $json = array(
+            "GamerTag"=> "TheSpicy",
+            "TeamId" => "1",
+            "MainGamePlayedId" => "1",
+            "Rank" =>"Challenger"
+        );
+        $body = json_encode($json);
+        $endpoint = "/gamers";
+        try {
+            $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
+        } catch (\Exception $err) {
+            $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
+        }
+        $this->assertNotFalse($output);
+        $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
+    }
+
+    public function testAdminPut() //Admin should be able to POST
+    {
+        $token = $this->generateToken('genericfac', 'Hello896');
+        $json = array(
+            "GamerId"=> "8",
+            "GamerTag"=> "TheSpiciestNoodle",
+            "TeamId" => "1",
+            "MainGamePlayedId" => "1",
+            "Rank" =>"Challenger"
+        );
+        $body = json_encode($json);
+        $endpoint = "/gamers";
+        try {
+            $output = Testing::callAPIOverHTTP($endpoint, Methods::PUT, $body, $token, Testing::JSON);
+        } catch (\Exception $err) {
+            $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
+        }
+        $this->assertNotFalse($output);
+        $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
+    }
+
+    public function testGetGamerId() {
+
+        $token = $this->generateToken("generic", "Hello357");
+        $body_contents = array();
+        $body = json_encode($body_contents);
+        $endpoint = "/gamers/admin/10";
+
+        try {
+            $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
+        } catch (\Exception $err) {
+            $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
+        }
+
+        $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
+        $this->assertEquals(401, Testing::getLastHTTPResponseCode());
+
+
+    }
+
+    public function testGetAllGamers()
+    {
+        $token = $this->generateToken("genericfac", "Hello896");
+        $body_contents = array();
+        $body = json_encode($body_contents);
+        $endpoint = "/gamers/admin";
+
+        try {
+            $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
+        } catch (\Exception $err) {
+            $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
+        }
+
+        $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
+        $this->assertEquals(200, Testing::getLastHTTPResponseCode());
+        //$this->assertJsonStringEqualsJsonString(""); //Compare against expected JSON object. You  could also do other tests.
+
+
+    }
+
+    public function testDeleteGamerId() {
+
+        $token = $this->generateToken("generic", "Hello357");
+        $body_contents = array();
+        $body = json_encode($body_contents);
+        $endpoint = "/gamers/admin/10";
+
+        try {
+            $output = Testing::callAPIOverHTTP($endpoint, Methods::DELETE, $body, $token, Testing::JSON);
+        } catch (\Exception $err) {
+            $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
+        }
+
+        $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
+        $this->assertEquals(401, Testing::getLastHTTPResponseCode());
+
+
+    }
+
 }
