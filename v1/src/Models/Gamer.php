@@ -8,7 +8,6 @@
 
 namespace Gamer\Models;
 
-use PHPUnit\Runner\Exception;
 use Gamer\Utilities\DatabaseConnection;
 
 
@@ -66,7 +65,7 @@ class Gamer implements \JsonSerializable
 
     }
 
-    public function updateAward(int $GamerId, string $GamerTag, int $TeamId, int $MainGamePlayedId, string $Rank){
+    public function updateGamer(int $GamerId, string $GamerTag, int $TeamId, int $MainGamePlayedId, string $Rank){
         $dbh = DatabaseConnection::getInstance();
 
         $stmtUpdate = $dbh->prepare("UPDATE `gamer_api`.`Gamers` SET 

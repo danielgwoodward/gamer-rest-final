@@ -13,6 +13,7 @@ use Firebase\JWT\ExpiredException;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
 use Gamer\Http\StatusCodes;
+use PHPUnit\Runner\Exception;
 
 class Token
 {
