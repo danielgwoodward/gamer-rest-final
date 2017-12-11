@@ -110,10 +110,10 @@ class testGamers extends TestCase {
 
     public function testGetGamerId() {
 
-        $token = $this->generateToken("generic", "Hello357");
+        $token = $this->generateToken("genericfac", "Hello896");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers/admin/10";
+        $endpoint = "/gamers/10";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -122,7 +122,7 @@ class testGamers extends TestCase {
         }
 
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
-        $this->assertEquals(401, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(200, Testing::getLastHTTPResponseCode());
 
 
     }
@@ -132,7 +132,7 @@ class testGamers extends TestCase {
         $token = $this->generateToken("genericfac", "Hello896");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers/admin";
+        $endpoint = "/gamers";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -149,7 +149,7 @@ class testGamers extends TestCase {
 
     public function testDeleteGamerId() {
 
-        $token = $this->generateToken("generic", "Hello357");
+        $token = $this->generateToken("genericfac", "Hello896");
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/gamers/admin/10";
@@ -161,7 +161,7 @@ class testGamers extends TestCase {
         }
 
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
-        $this->assertEquals(401, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(200, Testing::getLastHTTPResponseCode());
 
 
     }
