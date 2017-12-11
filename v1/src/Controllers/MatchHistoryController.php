@@ -91,4 +91,41 @@ class MatchHistoryController
         }
     }
 
+
+    public function getAllMatches() {
+        try{
+            return MatchHistory::getAllMatches();
+        }
+        catch(Exception $e) {
+            http_response_code(StatusCodes::BAD_REQUEST);
+            return "Sorry something went wrong";
+        }
+
+    }
+
+    public function getMatchByMatchID($args){
+
+        try {
+            $MatchHistory = new MatchHistory();
+            return $MatchHistory->getMatchByMatchID($args['MatchId']);
+        }
+        catch(Exception $e) {
+            http_response_code(StatusCodes::BAD_REQUEST);
+            return "Sorry something went wrong";
+        }
+
+    }
+
+    public function deleteMatchByMatchID($args)
+    {
+
+        $role = Token::getRoleFromToken();
+        if ($role == Token::ROLE_FACULTY) {
+            $MatchHistory = new MatchHistory();
+            return $MatchHistory->deleteMatchByMatchID($args['MatchId']);
+        } else {
+            http_response_code(StatusCodes::FORBIDDEN);
+        }
+    }
+
 }
