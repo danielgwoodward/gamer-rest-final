@@ -6,7 +6,7 @@
  * Time: 2:59 PM
  */
 
-namespace Scholarship\Utilities;
+namespace Gamer\Utilities;
 
 require_once __DIR__ . "/../../config.php";
 
