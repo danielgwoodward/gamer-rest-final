@@ -18,7 +18,7 @@ class GamesController
         $buildGame = new Game();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->GameName) && isset($json->GameESRBRating) && isset($json->GameCompany) && isset($json->PlayerCount) && isset($json->CreateYear) &&  count((array)$json) == 5) {
                     if ($json->GameName != NULL) {
@@ -55,7 +55,7 @@ class GamesController
         $updateGame = new Game();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->GameId) && isset($json->GameName) && isset($json->GameESRBRating) && isset($json->GameCompany) && isset($json->PlayerCount) && isset($json->CreateYear) &&  count((array)$json) == 6) {
                     if ($json->GameId != NULL && $json->GameName != NULL) {
@@ -90,7 +90,7 @@ class GamesController
 
     public function getAllGames() {
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             return Game::getAllGames();
         }
         else {
@@ -101,7 +101,7 @@ class GamesController
 
     public function getGameByGameID($args){
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY){
+        if($role == Token::ROLE_ADMIN){
 
             return Game::getGameByGameID($args['GameId']);
         }
@@ -113,7 +113,7 @@ class GamesController
 
     public function deleteGameByGameID($args){
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY){
+        if($role == Token::ROLE_ADMIN){
 
             return Game::deleteGameByGameID($args['GameId']);
         }

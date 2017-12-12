@@ -24,18 +24,17 @@ class TokensController
         $stmtGetAll->bindParam(":username", $username);
         $stmtGetAll->bindParam(":password", $password);
         $stmtGetAll->execute();
-        $User = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Gamer\Models\Token");
-
+        $User = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS);
+        $role = '';
         //If there wasn't a user in the database then exit with bad request
         if (!is_array($User)) {
             http_response_code(StatusCodes::BAD_REQUEST);
             exit("Not a user");
         }
 
-        //Assign role
-        if (strtoupper($User[0]['UserId']) == "USER") {
+        if (strtoupper($User[0]->Username) == "USER") {
             $role = Token::ROLE_USER;
-        } else if (strtoupper($User[0]['UserId']) == "ADMIN") {
+        } else if (strtoupper($User[0]->Username) == "ADMIN") {
             $role = Token::ROLE_ADMIN;
         }
 

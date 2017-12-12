@@ -18,7 +18,7 @@ class TeamsController
         $buildTeam = new Team();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->TeamName) && isset($json->TeamOwner) && isset($json->TeamMainGameId) && isset($json->TeamSecondaryGameId) && isset($json->TeamCountry) &&  count((array)$json) == 5) {
                     if ($json->TeamName != NULL) {
@@ -55,7 +55,7 @@ class TeamsController
         $updateTeam = new Team();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->TeamId) && isset($json->TeamName) && isset($json->TeamOwner) && isset($json->TeamMainGameId) && isset($json->TeamSecondaryGameId) && isset($json->TeamCountry) &&  count((array)$json) == 6) {
                     if ($json->TeamId != NULL && $json->TeamName != NULL) {
@@ -90,7 +90,7 @@ class TeamsController
 
     public function getAllTeams() {
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             return Team::getAllTeams();
         }
         else {
@@ -101,7 +101,7 @@ class TeamsController
 
     public function getTeamByTeamID($args){
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY){
+        if($role == Token::ROLE_ADMIN){
 
             return Team::getTeamByTeamID($args['TeamId']);
         }
@@ -113,7 +113,7 @@ class TeamsController
 
     public function deleteTeamByTeamID($args){
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY){
+        if($role == Token::ROLE_ADMIN){
 
             return Team::deleteTeamByTeamID($args['TeamId']);
         }

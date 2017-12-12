@@ -17,8 +17,8 @@ use PHPUnit\Runner\Exception;
 
 class Token
 {
-    const ROLE_STUDENT = "Student";
-    const ROLE_FACULTY = "Faculty";
+    const ROLE_USER = "USER";
+    const ROLE_ADMIN = "ADMIN";
     private static $KEY = "cdf97907258bb76aebaa7d435992f6b94f6f8886de4d725036e38cc17420625dc23fc2856519a1b51937ce89502cbb309b3501dd3908b4ff0966ff49c8747dfc";   //TODO: Extract key to config file that is loaded on-run.
     private static $lengthValid = 3600; // 1 Hour
 

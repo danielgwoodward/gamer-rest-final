@@ -17,23 +17,36 @@ use Gamer\Models\Token;
 
 class testTokens extends TestCase
 {
+    public function testPostAsBadUser()
+    {
+        $token = $this->generateToken('Bad', 'Bad');
+        $this->assertNotFalse($token);
+        $this->assertEquals(StatusCodes::BAD_REQUEST, Testing::getLastHTTPResponseCode());
+    }
+
     public function testPostAsUser()
     {
         $token = $this->generateToken('User', 'User');
         $this->assertNotNull($token);
         $this->assertEquals(Token::ROLE_USER, Token::getRoleFromToken($token));
+
     }
+
     public function testPostAsAdmin()
     {
         $token = $this->generateToken('Admin', 'Admin');
         $this->assertNotNull($token);
         $this->assertEquals(Token::ROLE_ADMIN, Token::getRoleFromToken($token));
+        $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
+
     private function generateToken($username, $password)
     {
         $tokenController = new TokensController();
         return $tokenController->buildToken($username, $password);
+        $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
+
     public function testCurl()
     {
         $token = "";
