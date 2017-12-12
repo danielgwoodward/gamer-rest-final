@@ -10,87 +10,41 @@ namespace Gamer\Controllers;
 
 use \Gamer\Models\Token as Token;
 use \Gamer\Http\StatusCodes;
+use Gamer\Utilities\DatabaseConnection;
 
 
 class TokensController
 {
     public function buildToken(string $username, string $password)
     {
-        $serverConfig = array('host' => '137.190.19.17',
-            'FQDN' => 'cs.weber.edu',
-            'accountDomainNameShort' => 'apollo',
-            'accountCanonicalForm' => '4',
-            'baseDn' => 'dc=cs,dc=weber,dc=edu');
-        $ldapConnectionString = "ldap://" . $serverConfig["host"];
-        $ad = ldap_connect($ldapConnectionString);
-        if (is_null($ad)) {
-            http_response_code(StatusCodes::INTERNAL_SERVER_ERROR);
-            die("Unable to connect to LDAP server.");
+        $dbh = DatabaseConnection::getInstance();
+        $stmtGetAll = $dbh->prepare("Select * From `gamer_api`.`Users` 
+                                     WHERE Username = :username
+                                     AND Password = :password");
+        $stmtGetAll->bindParam(":username", $username);
+        $stmtGetAll->bindParam(":password", $password);
+        $stmtGetAll->execute();
+        $User = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Gamer\Models\Token");
+
+        //If there wasn't a user in the database then exit with bad request
+        if (!is_array($User)) {
+            http_response_code(StatusCodes::BAD_REQUEST);
+            exit("Not a user");
         }
 
-        ldap_set_option($ad, LDAP_OPT_PROTOCOL_VERSION, 3);
-        ldap_set_option($ad, LDAP_OPT_REFERRALS, 0);
-
-        $bind = @ldap_bind($ad, "{$username}@{$serverConfig["FQDN"]}", $password);
-
-        if (!$bind) {
-            http_response_code(StatusCodes::UNAUTHORIZED);
-            die("Your credentials were rejected by the server.");
+        //Assign role
+        if (strtoupper($User[0]['UserId']) == "USER") {
+            $role = Token::ROLE_USER;
+        } else if (strtoupper($User[0]['UserId']) == "ADMIN") {
+            $role = Token::ROLE_ADMIN;
         }
 
-        //Check group membership
-        $userdn = strtolower($this->getDN($ad, $username, $serverConfig['baseDn']));
-
-        if ($userdn == '') {
-            http_response_code(StatusCodes::INTERNAL_SERVER_ERROR);
-            die("Failure to query LDAP");
-        }
-
-        $role = '';
-
-
-        if (strpos($userdn, "ou=students")) {
-            $role = Token::ROLE_STUDENT;
-        }
-
-        if (strpos($userdn, "ou=faculty")) {
-            $role = Token::ROLE_FACULTY;
-        }
-
+        //If the user didn't have one of these roles then they can't have a token
         if ($role == '') {
             http_response_code(StatusCodes::FORBIDDEN);
             exit("Not authorized");
         }
 
         return (new Token())->buildToken($role, $username);
-    }
-
-    /**
-     * This function searchs in LDAP tree entry specified by samaccountname and
-     * returns its DN or epmty string on failure.
-     *
-     * @param resource $ad
-     *          An LDAP link identifier, returned by ldap_connect().
-     * @param string $samaccountname
-     *          The sAMAccountName, logon name.
-     * @param string $basedn
-     *          The base DN for the directory.
-     * @return string
-     */
-    private function getDN($ad, $samaccountname, $basedn)
-    {
-        $result = ldap_search($ad, $basedn, "(samaccountname={$samaccountname})", array(
-            'dn'
-        ));
-        if (!$result) {
-            return '';
-        }
-
-        $entries = ldap_get_entries($ad, $result);
-        if ($entries['count'] > 0) {
-            return $entries[0]['dn'];
-        }
-
-        return '';
     }
 }
