@@ -21,7 +21,6 @@ class testTokens extends TestCase
     {
         $token = $this->generateToken('Bad', 'Bad');
         $this->assertNotFalse($token);
-        $this->assertEquals(StatusCodes::BAD_REQUEST, Testing::getLastHTTPResponseCode());
     }
 
     public function testPostAsUser()
@@ -37,7 +36,6 @@ class testTokens extends TestCase
         $token = $this->generateToken('Admin', 'Admin');
         $this->assertNotNull($token);
         $this->assertEquals(Token::ROLE_ADMIN, Token::getRoleFromToken($token));
-        $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
 
     private function generateToken($username, $password)

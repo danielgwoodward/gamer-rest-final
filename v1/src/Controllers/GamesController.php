@@ -6,9 +6,9 @@
  * Time: 10:32 AM
  */
 
-namespace Games\Controllers;
+namespace Gamer\Controllers;
 
-use Gamer\Models\Gamer;
+use Gamer\Models\Game;
 use \Gamer\Models\Token as Token;
 use \Gamer\Http\StatusCodes;
 
@@ -89,37 +89,34 @@ class GamesController
     }
 
     public function getAllGames() {
-        $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_ADMIN) {
+        try{
             return Game::getAllGames();
         }
-        else {
-            http_response_code(StatusCodes::FORBIDDEN);
-            return 'You do not have authorization';
+        catch(Exception $e) {
+            http_response_code(StatusCodes::BAD_REQUEST);
+            return "Sorry something went wrong";
         }
     }
 
     public function getGameByGameID($args){
-        $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_ADMIN){
-
-            return Game::getGameByGameID($args['GameId']);
+        try {
+            $Game = new Game();
+            return $Game->getGameByGameID($args['GameId']);
         }
-        else {
-            http_response_code(StatusCodes::FORBIDDEN);
-            return 'You do not have authorization';
+        catch(Exception $e) {
+            http_response_code(StatusCodes::BAD_REQUEST);
+            return "Sorry something went wrong";
         }
     }
 
     public function deleteGameByGameID($args){
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_ADMIN){
-
-            return Game::deleteGameByGameID($args['GameId']);
+        if($role == Token::ROLE_ADMIN) {
+            $Game = new Game();
+            return $Game->deleteGameByGameID($args['GameId']);
         }
         else {
             http_response_code(StatusCodes::FORBIDDEN);
-            return 'You do not have authorization';
         }
     }
 }

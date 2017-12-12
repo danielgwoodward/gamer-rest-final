@@ -6,7 +6,7 @@
  * Time: 9:30 AM
  */
 
-namespace Team\Models;
+namespace Gamer\Models;
 
 use PHPUnit\Runner\Exception;
 use Gamer\Utilities\DatabaseConnection;
@@ -104,7 +104,7 @@ class Team
         $stmtGetAll->bindParam(":TeamId", $TeamId);
         $stmtGetAll->execute();
 
-        $AllGamers = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Team\Models\Team");
+        $AllGamers = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Gamer\Models\Team");
         return $AllGamers;
     }
 

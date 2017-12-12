@@ -74,8 +74,10 @@ class Token
 
     public static function getRoleFromToken($jwt = null)
     {
-        if ($jwt == null)
+        if ($jwt == null) {
             $jwt = self::getBearerTokenFromHeader();
+            $jwt = json_decode($jwt);
+        }
         $tokenData = static::extractTokenData($jwt);
         $data = (array)$tokenData['data'];
         return $data['role'];
@@ -92,7 +94,6 @@ class Token
     private static function getBearerTokenFromHeader()
     {
         $headers = apache_request_headers();
-
         if (!isset($headers)) {
             http_response_code(StatusCodes::BAD_REQUEST);
             exit("No headers set.");
@@ -112,7 +113,6 @@ class Token
             http_response_code(StatusCodes::UNAUTHORIZED);
             exit("No credentials provided.");
         }
-
         return $jwt;
     }
 }

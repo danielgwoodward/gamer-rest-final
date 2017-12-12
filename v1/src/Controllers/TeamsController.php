@@ -6,9 +6,9 @@
  * Time: 9:14 AM
  */
 
-namespace Team\Controllers;
+namespace Gamer\Controllers;
 
-use Gamer\Models\Gamer;
+use Gamer\Models\Team;
 use \Gamer\Models\Token as Token;
 use \Gamer\Http\StatusCodes;
 
@@ -25,7 +25,6 @@ class TeamsController
 
                         $buildTeam->init($json->TeamName, $json->TeamOwner, $json->TeamMainGameId, $json->TeamSecondaryGameId, $json->TeamCountry);
                         http_response_code(StatusCodes::CREATED);
-                        echo "Team Created\n";
                         return $json;
                     }
                     else {
@@ -62,7 +61,6 @@ class TeamsController
 
                         $updateTeam->updateTeam($json->TeamId, $json->TeamName, $json->TeamOwner, $json->TeamMainGameId, $json->TeamSecondaryGameId, $json->TeamCountry);
                         http_response_code(StatusCodes::CREATED);
-                        echo "Team Updated\n";
                         return $json;
                     }
                     else {

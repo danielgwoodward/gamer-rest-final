@@ -6,7 +6,7 @@
  * Time: 10:40 AM
  */
 
-namespace Games\Models;
+namespace Gamer\Models;
 
 use PHPUnit\Runner\Exception;
 use Gamer\Utilities\DatabaseConnection;
@@ -99,12 +99,12 @@ class Game
 
     public function getGameByGameID($GameId){
     $dbh = DatabaseConnection::getInstance();
-    $stmtGetAll = $dbh->prepare("Select * From `gamer_api`.`Games` 
+    $stmt = $dbh->prepare("Select * From `gamer_api`.`Games` 
                                      WHERE GameId = :GameId");
-    $stmtGetAll->bindParam(":GameId", $GameId);
-    $stmtGetAll->execute();
+    $stmt->bindParam(":GameId", $GameId);
+    $stmt->execute();
 
-    $AllGames = $stmtGetAll->FetchAll(\PDO::FETCH_CLASS, "Games\Models\Game");
+    $AllGames = $stmt->FetchAll(\PDO::FETCH_CLASS, "Gamer\Models\Game");
     return $AllGames;
 }
 

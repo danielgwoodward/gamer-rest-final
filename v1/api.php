@@ -127,8 +127,97 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
         return $matches;
     };
 
+    /** ALL Teams Functions */
 
+    //POST
+    $handlePostTeam = function ($args) {
+        $TeamController = new \Gamer\Controllers\TeamsController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $team = $TeamController->buildTeam($json);
+        return $team;
 
+    };
+
+    //PUT
+    $handlePutTeam = function ($args) {
+        $TeamController = new \Gamer\Controllers\TeamsController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $team = $TeamController->updateTeam($json);
+        return $team;
+
+    };
+
+    //GET ALL
+    $handleGetAllTeams = function () {
+        $TeamController = new \Gamer\Controllers\TeamsController();
+        $team = $TeamController->getAllTeams();
+        return $team;
+    };
+
+    //GET SPECIFIC
+    $handleGetTeamId = function ($args) {
+        $TeamController = new \Gamer\Controllers\TeamsController();
+        $team = $TeamController->getTeamByTeamID($args);
+        return $team;
+
+    };
+
+    //DELETE
+    $handleDeleteTeamId = function ($args) {
+        $TeamController = new \Gamer\Controllers\TeamsController();
+        $team = $TeamController->deleteTeamByTeamID($args);
+        return $team;
+    };
+
+    /** ALL Games Functions */
+
+    //POST
+    $handlePostGame = function ($args) {
+        $GameController = new \Gamer\Controllers\GamesController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $Game = $GameController->buildGame($json);
+        return $Game;
+
+    };
+
+    //PUT
+    $handlePutGame = function ($args) {
+        $GameController = new \Gamer\Controllers\GamesController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $Game = $GameController->updateGame($json);
+        return $Game;
+
+    };
+
+    //GET ALL
+    $handleGetAllGames = function () {
+        $GameController = new \Gamer\Controllers\GamesController();
+        $Game = $GameController->getAllGames();
+        return $Game;
+    };
+
+    //GET SPECIFIC
+    $handleGetGameId = function ($args) {
+        $GameController = new \Gamer\Controllers\GamesController();
+        $Game = $GameController->getGameByGameID($args);
+        return $Game;
+
+    };
+
+    //DELETE
+    $handleDeleteGameId = function ($args) {
+        $GameController = new \Gamer\Controllers\GamesController();
+        $Game = $GameController->deleteGameByGameID($args);
+        return $Game;
+    };
 
 
 
@@ -150,9 +239,19 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     $r->addRoute(Methods::GET, $baseURI . '/match/{MatchId:\d+}', $handleGetMatchId);
     $r->addRoute(Methods::DELETE, $baseURI . '/match/admin/{MatchId:\d+}', $handleDeleteMatchId);
 
+    /** GAMES ROUTES */
+    $r->addRoute(Methods::POST, $baseURI . '/games', $handlePostGame);
+    $r->addRoute(Methods::PUT, $baseURI . '/games', $handlePutGame);
+    $r->addRoute(Methods::GET, $baseURI . '/games', $handleGetAllGames);
+    $r->addRoute(Methods::GET, $baseURI . '/games/{GameId:\d+}', $handleGetGameId);
+    $r->addRoute(Methods::DELETE, $baseURI . '/games/admin/{GamesId:\d+}', $handleDeleteGameId);
 
-
-
+    /** TEAMS ROUTES */
+    $r->addRoute(Methods::POST, $baseURI . '/teams', $handlePostTeam);
+    $r->addRoute(Methods::PUT, $baseURI . '/teams', $handlePutTeam);
+    $r->addRoute(Methods::GET, $baseURI . '/teams', $handleGetAllTeams);
+    $r->addRoute(Methods::GET, $baseURI . '/teams/{TeamId:\d+}', $handleGetTeamId);
+    $r->addRoute(Methods::DELETE, $baseURI . '/teams/admin/{TeamId:\d+}', $handleDeleteTeamId);
 
 });
 
