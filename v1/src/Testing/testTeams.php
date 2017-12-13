@@ -1,12 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Dan
- * Date: 12/10/17
- * Time: 5:12 PM
+ * User: Nicholas Hayes
+ * Date: 12/11/2017
+ * Time: 10:02 AM
  */
 
-namespace Gamer\Testing;
+namespace Team\Testing;
 
 use Gamer\Controllers\TokensController;
 use Gamer\Http\Methods;
@@ -14,7 +14,7 @@ use \PHPUnit\Framework\TestCase;
 use \Gamer\Http\StatusCodes;
 use Gamer\Utilities\Testing;
 
-class testGamers extends TestCase {
+class testTeams extends TestCase {
 
     private function generateToken($username, $password)
     {
@@ -24,10 +24,10 @@ class testGamers extends TestCase {
 
     public function testAdminNULLPUT() //Test Faculty with NULL PUT Body
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
         $json = NULL;
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/teams";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::PUT, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -39,10 +39,10 @@ class testGamers extends TestCase {
 
     public function testAdminNULLPOST() //Test Faculty with NULL POST Body
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
         $json = NULL;
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/teams";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -54,17 +54,17 @@ class testGamers extends TestCase {
 
     public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
         $json = array(
-                "EXTRA" => "NODONTDOTHAT",
-                "GamerTag"=> "TheSpicyNoodle",
-                "TeamId" => "1",
-                "MainGamePlayedId" => "1",
-                "Rank" =>"Gold"
-
+            "EXTRA" => "NODONTDOTHAT",
+            "TeamName"=> "TheSpicyNoodles",
+            "TeamOwner" => "1",
+            "TeamMainGameId" => "1",
+            "TeamSecondaryGameId" =>"2",
+            "TeamCountry" => "Canada"
         );
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/teams";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -76,15 +76,16 @@ class testGamers extends TestCase {
 
     public function testAdminPost() //Admin should be able to POST
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
         $json = array(
-            "GamerTag"=> "TheSpicy",
-            "TeamId" => "1",
-            "MainGamePlayedId" => "1",
-            "Rank" =>"Challenger"
+            "TeamName"=> "TheSpicyNoodles",
+            "TeamOwner" => "1",
+            "TeamMainGameId" => "1",
+            "TeamSecondaryGameId" =>"2",
+            "TeamCountry" => "Canada"
         );
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/teams";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -92,35 +93,37 @@ class testGamers extends TestCase {
         }
         $this->assertNotFalse($output);
         $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
+        //TODO: Need to check the JSON string that is returned from a create
     }
 
-    public function testAdminPut() //Admin should be able to POST
+    public function testAdminPut() //Admin should be able to PUT
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
         $json = array(
-            "GamerId"=> "8",
-            "GamerTag"=> "TheSpiciestNoodle",
-            "TeamId" => "1",
-            "MainGamePlayedId" => "1",
-            "Rank" =>"Challenger"
+            "TeamId"=> "1",
+            "TeamName"=> "TheSpicyNoodles",
+            "TeamOwner" => "1",
+            "TeamMainGameId" => "1",
+            "TeamSecondaryGameId" =>"2",
+            "TeamCountry" => "Canada"
         );
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/teams";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::PUT, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
             $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
         }
         $this->assertNotFalse($output);
-        $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
 
-    public function testGetGamerId() {
+    public function testGetTeamId() {
 
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken("User", "User");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers/10";
+        $endpoint = "/teams/1";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -130,16 +133,15 @@ class testGamers extends TestCase {
 
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
         $this->assertEquals(200, Testing::getLastHTTPResponseCode());
-
-
     }
+    //TODO: Create a testGetTeamIdAsAdmin
 
-    public function testGetAllGamers()
+    public function testGetAllTeams()
     {
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken("User", "User");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers";
+        $endpoint = "/teams";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -150,16 +152,16 @@ class testGamers extends TestCase {
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
         $this->assertEquals(200, Testing::getLastHTTPResponseCode());
         //$this->assertJsonStringEqualsJsonString(""); //Compare against expected JSON object. You  could also do other tests.
-
-
+        //TODO: Find a way to compare the returned JSON string to what is in the database. TimeFrame has an example of how to do this.
+        //TODO: All of the unit tests need a regular user version and a faculty version.
     }
 
     public function testDeleteGamerId() {
 
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken("User", "User");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers/admin/10";
+        $endpoint = "/teams/admin/10";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::DELETE, $body, $token, Testing::JSON);
@@ -168,8 +170,7 @@ class testGamers extends TestCase {
         }
 
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
-        $this->assertEquals(200, Testing::getLastHTTPResponseCode());
-
-
+        $this->assertEquals(403, Testing::getLastHTTPResponseCode());
+        //TODO: Create a testDeleteGamerIdAsFaculty
     }
 }

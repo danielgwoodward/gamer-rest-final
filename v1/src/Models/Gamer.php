@@ -20,8 +20,6 @@ class Gamer implements \JsonSerializable
     public $MainGamePlayedId;
     public $Rank;
 
-
-
     public function __construct()
     {
 
