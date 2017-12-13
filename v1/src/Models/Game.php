@@ -34,32 +34,30 @@ class Game
                 "GameName"=> $this->GameName,
                 "GameCompany"=>$this->GameCompany,
                 "GameESRBRating"=>$this->GameESRBRating,
-                "PlayerCounter"=>$this->PlayerCounter,
+                "PlayerCounter"=>$this->PlayerCount,
                 "CreateYear"=>$this->CreateYear
             );
     }
 
-    public function init(int $GameName, string $GameCompany = null, string $GameESRBRating = null, int $PlayerCounter = null, string $CreateYear = null){
+    public function init(int $GameName, string $GameCompany, string $GameESRBRating, int $PlayerCount, string $CreateYear){
 
     $this->GameName = $GameName;
     $this->GameCompany = $GameCompany;
     $this->GameESRBRating = $GameESRBRating;
-    $this->PlayerCounter = $PlayerCounter;
+    $this->PlayerCount = $PlayerCount;
     $this->CreateYear = $CreateYear;
 
     $dbh = DatabaseConnection::getInstance();
-    $stmtCreate = $dbh->prepare("INSERT INTO `gamer_api`.`Games`(CreateYear, GameCompany, GameESRBRating, GameName, PlayerCount)
-        VALUES(:CreateYear, :GameCompany, :GameESRBRating, :GameName, :PlayerCount)");
+    $stmt = $dbh->prepare("INSERT INTO `gamer_api`.`Games` (`GameName`, `GameESRBRating`, `GameCompany`, `PlayerCount`, `CreateYear`)
+        VALUES (:GameName, :GameESRBRating, :GameCompany, :PlayerCount, :CreateYear)");
 
+    $stmt->bindParam(":GameName", $GameName);
+    $stmt->bindParam(":GameESRBRating", $GameESRBRating);
+    $stmt->bindParam(":GameCompany", $GameCompany);
+    $stmt->bindParam(":PlayerCount", $PlayerCount);
+    $stmt->bindParam(":CreateYear", $CreateYear);
 
-    $stmtCreate->bindParam(":CreateYear", $CreateYear);
-    $stmtCreate->bindParam(":GameCompany", $GameCompany);
-    $stmtCreate->bindParam(":GameESRBRating", $GameESRBRating);
-    $stmtCreate->bindParam(":GameName", $GameName);
-    $stmtCreate->bindParam(":PlayerCount", $PlayerCount);
-
-    $stmtCreate->execute();
-
+    $stmt->execute();
 
     $this->GameId = $dbh->lastInsertId('id');
 }

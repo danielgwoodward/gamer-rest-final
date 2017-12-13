@@ -22,10 +22,8 @@ class GamesController
             try {
                 if (isset($json->GameName) && isset($json->GameESRBRating) && isset($json->GameCompany) && isset($json->PlayerCount) && isset($json->CreateYear) &&  count((array)$json) == 5) {
                     if ($json->GameName != NULL) {
-
-                        $buildGame->init($json->GameName, $json->GameESRBRating, $json->GameCompany, $json->PlayerCount, $json->CreateYear);
+                        $buildGame->init($json->GameName, $json->GameCompany, $json->GameESRBRating, $json->PlayerCount, $json->CreateYear);
                         http_response_code(StatusCodes::CREATED);
-                        echo "Game Created\n";
                         return $json;
                     }
                     else {
@@ -38,12 +36,10 @@ class GamesController
                     return 'Some fields were left out of the request, or do not match';
                 }
             }
-
             catch (\Exception $e){
                 http_response_code(StatusCodes::BAD_REQUEST);
                 return "Something went wrong";
             }
-
         }
         else{
             http_response_code(StatusCodes::FORBIDDEN);
@@ -60,10 +56,8 @@ class GamesController
                 if (isset($json->GameId) && isset($json->GameName) && isset($json->GameESRBRating) && isset($json->GameCompany) && isset($json->PlayerCount) && isset($json->CreateYear) &&  count((array)$json) == 6) {
                     if ($json->GameId != NULL && $json->GameName != NULL) {
 
-                        $updateGame->updateGame($json->GameId, $json->GameName, $json->GameESRBRating, $json->GameCompany, $json->PlayerAmount, $json->CreateYear);
+                        $updateGame->updateGame($json->GameId, $json->GameName, $json->GameESRBRating, $json->GameCompany, $json->PlayerCount, $json->CreateYear);
                         http_response_code(StatusCodes::CREATED);
-                        echo "Game Updated\n";
-                        return $json;
                     }
                     else {
                         http_response_code(StatusCodes::BAD_REQUEST);
@@ -113,7 +107,7 @@ class GamesController
         $role = Token::getRoleFromToken();
         if($role == Token::ROLE_ADMIN) {
             $Game = new Game();
-            return $Game->deleteGameByGameID($args['GameId']);
+            $Game->deleteGameByGameID($args['GameId']);
         }
         else {
             http_response_code(StatusCodes::FORBIDDEN);

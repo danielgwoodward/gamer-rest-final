@@ -244,7 +244,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     $r->addRoute(Methods::PUT, $baseURI . '/games', $handlePutGame);
     $r->addRoute(Methods::GET, $baseURI . '/games', $handleGetAllGames);
     $r->addRoute(Methods::GET, $baseURI . '/games/{GameId:\d+}', $handleGetGameId);
-    $r->addRoute(Methods::DELETE, $baseURI . '/games/admin/{GamesId:\d+}', $handleDeleteGameId);
+    $r->addRoute(Methods::DELETE, $baseURI . '/games/admin/{GameId:\d+}', $handleDeleteGameId);
 
     /** TEAMS ROUTES */
     $r->addRoute(Methods::POST, $baseURI . '/teams', $handlePostTeam);

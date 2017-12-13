@@ -123,7 +123,7 @@ class testTeams extends TestCase {
         $token = $this->generateToken("User", "User");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/teams/admin/10";
+        $endpoint = "/teams/1";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -132,7 +132,7 @@ class testTeams extends TestCase {
         }
 
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
-        $this->assertEquals(403, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(200, Testing::getLastHTTPResponseCode());
     }
     //TODO: Create a testGetTeamIdAsAdmin
 
@@ -141,7 +141,7 @@ class testTeams extends TestCase {
         $token = $this->generateToken("User", "User");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/teams/admin";
+        $endpoint = "/teams";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);

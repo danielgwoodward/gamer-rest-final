@@ -59,7 +59,7 @@ class testGames extends TestCase {
             "EXTRA" => "NODONTDOTHAT",
             "GameName"=> "1",
             "GameCompany" => "MyNoodles",
-            "GameESERBRating" => "T",
+            "GameESRBRating" => "T",
             "PlayerCount" =>"100",
             "CreateYear" => "2017"
         );
@@ -78,10 +78,10 @@ class testGames extends TestCase {
     {
         $token = $this->generateToken('Admin', 'Admin');
         $json = array(
-            "GameName"=> "1",
+            "GameName"=> 1,
             "GameCompany" => "MyNoodles",
-            "GameESERBRating" => "T",
-            "PlayerCount" =>"100",
+            "GameESRBRating" => "T",
+            "PlayerCount" =>100,
             "CreateYear" => "2017"
         );
         $body = json_encode($json);
@@ -91,6 +91,7 @@ class testGames extends TestCase {
         } catch (\Exception $err) {
             $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
         }
+
         $this->assertNotFalse($output);
         $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
         //TODO: Need to check the JSON string that is returned from a create
@@ -103,7 +104,7 @@ class testGames extends TestCase {
             "GameId"=> "1",
             "GameName"=> "1",
             "GameCompany" => "MyNoodles",
-            "GameESERBRating" => "T",
+            "GameESRBRating" => "T",
             "PlayerCount" =>"100",
             "CreateYear" => "2017"
         );
@@ -123,7 +124,7 @@ class testGames extends TestCase {
         $token = $this->generateToken("Admin", "Admin");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/games/admin/10";
+        $endpoint = "/games/1";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -132,7 +133,7 @@ class testGames extends TestCase {
         }
 
         $this->assertNotFalse($output); //False on error, otherwise it's the raw results. You should be able to json_decode to read the response.
-        $this->assertEquals(403, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(200, Testing::getLastHTTPResponseCode());
     }
     //TODO: Create a testGetTeamIdAsAdmin
 
@@ -141,7 +142,7 @@ class testGames extends TestCase {
         $token = $this->generateToken("Admin", "Admin");
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/games/admin";
+        $endpoint = "/games/";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
