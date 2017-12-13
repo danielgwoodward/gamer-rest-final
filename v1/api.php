@@ -127,7 +127,55 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
         return $matches;
     };
 
+
+    /** ALL PlayerGamesList Functions */
+
+    //POST
+    $handlePostPlayerGList = function ($args) {
+        $PlayerGListController = new \Gamer\Controllers\PlayerGamesListController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $playerglist = $PlayerGListController->buildPlayerGList($json);
+        return $playerglist;
+
+    };
+
+    //PUT
+    $handlePutPlayerGList = function ($args) {
+        $playerglistController = new \Gamer\Controllers\PlayerGamesListController();
+        if (empty($json)) {
+            $json = (object) json_decode(file_get_contents('php://input'));
+        }
+        $playerglist = $playerglistController->updatePlayerGList($json);
+        return $playerglist;
+
+    };
+
+    //GET ALL
+    $handleGetAllPlayerGList = function () {
+        $playerglistController = new \Gamer\Controllers\PlayerGamesListController();
+        $playerglist = $playerglistController->getPlayerGList();
+        return $playerglist;
+    };
+
+    //GET SPECIFIC
+    $handleGetPlayerGList = function ($args) {
+        $playerglistController = new \Gamer\Controllers\PlayerGamesListController();
+        $playerglist = $playerglistController->getGamerByGamerID($args);
+        return $playerglist;
+
+    };
+
+    //DELETE
+    $handleDeletePlayerGList = function ($args) {
+        $playerglistController = new \Gamer\Controllers\PlayerGamesListController();
+        $playerglist = $playerglistController->deleteGamerByGamerID($args);
+        return $playerglist;
+    };
+=======
     /** ALL Teams Functions */
+
 
     //POST
     $handlePostTeam = function ($args) {
@@ -221,7 +269,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
 
 
 
-    /** TOKEN ROUTE */
+    /** TOKEN ROUTE */  
     $r->addRoute(Methods::POST, $baseURI . '/tokens', $handlePostToken);
 
     /** GAMERS ROUTE */
@@ -232,12 +280,20 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     $r->addRoute(Methods::DELETE, $baseURI . '/gamers/admin/{GamerId:\d+}', $handleDeleteGamerId);
 
     /** MatchHistory */
-
     $r->addRoute(Methods::POST, $baseURI . '/match', $handlePostMatchHistory);
     $r->addRoute(Methods::PUT, $baseURI . '/match', $handlePutMatchHistory);
     $r->addRoute(Methods::GET, $baseURI . '/match', $handleGetAllMatches);
     $r->addRoute(Methods::GET, $baseURI . '/match/{MatchId:\d+}', $handleGetMatchId);
     $r->addRoute(Methods::DELETE, $baseURI . '/match/admin/{MatchId:\d+}', $handleDeleteMatchId);
+
+
+    /** PlayerGamesList */
+    $r->addRoute(Methods::POST, $baseURI . '/playerglist', $handlePostPlayerGList);
+    $r->addRoute(Methods::PUT, $baseURI . '/playerglist', $handlePutPlayerGList);
+    $r->addRoute(Methods::GET, $baseURI . '/playerglist', $handleGetAllPlayerGList);
+    $r->addRoute(Methods::GET, $baseURI . '/playerglist/{GamerId:\d+}', $handleGetPlayerGList);
+    $r->addRoute(Methods::DELETE, $baseURI . '/playerglist/admin/{GamerId:\d+}/{GameId:\d+}', $handleDeletePlayerGList);
+
 
     /** GAMES ROUTES */
     $r->addRoute(Methods::POST, $baseURI . '/games', $handlePostGame);
@@ -252,6 +308,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
     $r->addRoute(Methods::GET, $baseURI . '/teams', $handleGetAllTeams);
     $r->addRoute(Methods::GET, $baseURI . '/teams/{TeamId:\d+}', $handleGetTeamId);
     $r->addRoute(Methods::DELETE, $baseURI . '/teams/admin/{TeamId:\d+}', $handleDeleteTeamId);
+
 
 });
 
@@ -285,14 +342,3 @@ switch($routeInfo[0]) {
         echo json_encode($response);
         break;
 }
-
-
-
-
-
-
-
-
-
-
-
