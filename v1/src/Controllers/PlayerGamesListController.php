@@ -20,6 +20,7 @@ class PlayerGamesListController
     public function buildPlayerGList($json){
         $buildPlayerGamesList = new PlayerGamesList();
 
+
        $role = Token::getRoleFromToken();
         if($role == Token::ROLE_ADMIN) {
             try {
@@ -47,6 +48,7 @@ class PlayerGamesListController
                 return "Something went wrong";
             }
 
+
         }
         else{
             http_response_code(StatusCodes::FORBIDDEN);
@@ -57,6 +59,7 @@ class PlayerGamesListController
     public function updatePlayerGList($json){
         $updatePlayerGamesList = new PlayerGamesList();
 
+
         $role = Token::getRoleFromToken();
         if($role == Token::ROLE_ADMIN) {
             try {
@@ -64,6 +67,7 @@ class PlayerGamesListController
                     if ($json->GameId != NULL && $json->GamerId != NULL) {
 
                         $updatePlayerGamesList->updatePlayerGList($json->GamerId, $json->GameId);
+
                         http_response_code(StatusCodes::OK);
                         echo "Added to the Database\n";
                         return $json;
@@ -85,6 +89,7 @@ class PlayerGamesListController
             }
 
         }
+
         else{
             http_response_code(StatusCodes::FORBIDDEN);
 
@@ -118,6 +123,7 @@ class PlayerGamesListController
 
     public function deleteGamerByGamerID($args){
 
+
         $role = Token::getRoleFromToken();
         if($role == Token::ROLE_ADMIN) {
             $PlayerGList = new PlayerGamesList();
@@ -128,7 +134,5 @@ class PlayerGamesListController
         }
 
     }
-
-
 
 }

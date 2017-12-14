@@ -87,26 +87,11 @@ class TeamsController
     }
 
     public function getAllTeams() {
-        $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_ADMIN) {
-            return Team::getAllTeams();
-        }
-        else {
-            http_response_code(StatusCodes::FORBIDDEN);
-            return 'You do not have authorization';
-        }
+        return Team::getAllTeams();
     }
 
     public function getTeamByTeamID($args){
-        $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_ADMIN){
-
-            return Team::getTeamByTeamID($args['TeamId']);
-        }
-        else {
-            http_response_code(StatusCodes::FORBIDDEN);
-            return 'You do not have authorization';
-        }
+        return Team::getTeamByTeamID($args['TeamId']);
     }
 
     public function deleteTeamByTeamID($args){

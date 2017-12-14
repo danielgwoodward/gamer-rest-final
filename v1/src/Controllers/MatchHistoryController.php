@@ -21,6 +21,7 @@ class MatchHistoryController
         $buildMatch = new MatchHistory();
 
         $role = Token::getRoleFromToken();
+
         if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->AwayTeamId) && isset($json->HomeTeamId) && isset($json->MatchDate) && isset($json->WinningTeamId) &&  count((array)$json) == 4) {
@@ -58,12 +59,14 @@ class MatchHistoryController
         $buildMatch = new MatchHistory();
 
         $role = Token::getRoleFromToken();
+
         if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->MatchId) && isset($json->AwayTeamId) && isset($json->HomeTeamId) && isset($json->MatchDate) && isset($json->WinningTeamId) &&  count((array)$json) == 5) {
                     if ($json->MatchId != NULL && $json->AwayTeamId != NULL && $json->HomeTeamId != NULL && $json->MatchDate != NULL && $json->WinningTeamId != NULL) {
 
                         $buildMatch->updateMatch($json->MatchId, $json->AwayTeamId, $json->HomeTeamId, $json->MatchDate, $json->WinningTeamId);
+
                         http_response_code(StatusCodes::OK);
                         echo "Match Updated\n";
                         return $json;
@@ -120,7 +123,9 @@ class MatchHistoryController
     {
 
         $role = Token::getRoleFromToken();
+
         if ($role == Token::ROLE_ADMIN) {
+
             $MatchHistory = new MatchHistory();
             return $MatchHistory->deleteMatchByMatchID($args['MatchId']);
         } else {

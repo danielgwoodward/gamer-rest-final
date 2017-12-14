@@ -34,8 +34,7 @@ class PlayerGamesList  implements \JsonSerializable
 
 
     public function init(int $GamerId, int $GameId){
-
-
+      
     $this->GamerId = $GamerId;
     $this->GameId = $GameId;
 

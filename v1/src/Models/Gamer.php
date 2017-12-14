@@ -9,7 +9,9 @@
 namespace Gamer\Models;
 
 use Gamer\Utilities\DatabaseConnection;
+
 use PHPUnit\Runner\Exception;
+
 
 
 class Gamer implements \JsonSerializable
@@ -40,7 +42,6 @@ class Gamer implements \JsonSerializable
 
     public function init(string $GamerTag, int $TeamId = null, int $MainGamePlayedId = null, string $Rank = null){
 
-try {
     $this->GamerTag = $GamerTag;
     $this->TeamId = $TeamId;
     $this->MainGamePlayedId = $MainGamePlayedId;
@@ -62,11 +63,6 @@ try {
 
     $this->GamerId = $dbh->lastInsertId('id');
 }
-catch (Exception $e){
-    "Something went wrong";
-
-}
-
     }
 
     public function updateGamer(int $GamerId, string $GamerTag, int $TeamId, int $MainGamePlayedId, string $Rank){
