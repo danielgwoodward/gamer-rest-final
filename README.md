@@ -1,1 +1,1 @@
-#  CS 3620 php gamer-rest-final
+#  CS 3620 PHP Gamer-Rest-Final
