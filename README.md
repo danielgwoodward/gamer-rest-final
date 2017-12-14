@@ -3,3 +3,13 @@
 ## API Endpoints
 
 ### Gamers 
+
+### Teams
+
+### PlayerGamesList
+
+### MatchHistory
+
+### Games
+
+## Tokens
