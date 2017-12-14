@@ -10,6 +10,9 @@ namespace Gamer\Models;
 
 use Gamer\Utilities\DatabaseConnection;
 
+use PHPUnit\Runner\Exception;
+
+
 
 class Gamer implements \JsonSerializable
 {
@@ -39,28 +42,27 @@ class Gamer implements \JsonSerializable
 
     public function init(string $GamerTag, int $TeamId = null, int $MainGamePlayedId = null, string $Rank = null){
 
+    $this->GamerTag = $GamerTag;
+    $this->TeamId = $TeamId;
+    $this->MainGamePlayedId = $MainGamePlayedId;
+    $this->Rank = $Rank;
 
-        $this->GamerTag = $GamerTag;
-        $this->TeamId = $TeamId;
-        $this->MainGamePlayedId = $MainGamePlayedId;
-        $this->Rank = $Rank;
 
-
-        $dbh = DatabaseConnection::getInstance();
-        $stmtCreate = $dbh->prepare("INSERT INTO `gamer_api`.`Gamers`(GamerTag,TeamId,MainGamePlayedId,Rank)
+    $dbh = DatabaseConnection::getInstance();
+    $stmtCreate = $dbh->prepare("INSERT INTO `gamer_api`.`Gamers`(GamerTag,TeamId,MainGamePlayedId,Rank)
         VALUES(:GamerTag, :TeamId, :MainGamePlayedId, :Rank)");
 
 
-        $stmtCreate->bindParam(":GamerTag", $GamerTag);
-        $stmtCreate->bindParam(":TeamId", $TeamId);
-        $stmtCreate->bindParam(":MainGamePlayedId", $MainGamePlayedId);
-        $stmtCreate->bindParam(":Rank", $Rank);
+    $stmtCreate->bindParam(":GamerTag", $GamerTag);
+    $stmtCreate->bindParam(":TeamId", $TeamId);
+    $stmtCreate->bindParam(":MainGamePlayedId", $MainGamePlayedId);
+    $stmtCreate->bindParam(":Rank", $Rank);
 
-        $stmtCreate->execute();
+    $stmtCreate->execute();
 
 
-        $this->GamerId = $dbh->lastInsertId('id');
-
+    $this->GamerId = $dbh->lastInsertId('id');
+}
     }
 
     public function updateGamer(int $GamerId, string $GamerTag, int $TeamId, int $MainGamePlayedId, string $Rank){

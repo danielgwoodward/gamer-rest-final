@@ -21,7 +21,9 @@ class GamersController
         $buildGamer = new Gamer();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+
+        if($role == Token::ROLE_ADMIN) {
+
             try {
                 if (isset($json->GamerTag) && isset($json->TeamId) && isset($json->MainGamePlayedId) && isset($json->Rank) &&  count((array)$json) == 4) {
                     if ($json->GamerTag != NULL) {
@@ -58,13 +60,17 @@ class GamersController
         $updateGamer = new Gamer();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+
+        if($role == Token::ROLE_ADMIN) {
+
             try {
                 if (isset($json->GamerId) && isset($json->GamerTag) && isset($json->TeamId) && isset($json->MainGamePlayedId) && isset($json->Rank) &&  count((array)$json) == 5) {
                     if ($json->GamerId != NULL && $json->GamerTag != NULL) {
 
                         $updateGamer->updateGamer($json->GamerId, $json->GamerTag, $json->TeamId, $json->MainGamePlayedId, $json->Rank);
-                        http_response_code(StatusCodes::CREATED);
+
+                        http_response_code(StatusCodes::OK);
+
                         echo "Gamer Updated\n";
                         return $json;
                     }
@@ -117,7 +123,9 @@ class GamersController
     public function deleteGamerByGamerID($args){
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+
+      
+        if($role == Token::ROLE_ADMIN) {
             $Gamer = new Gamer();
                   return $Gamer->deleteGamerByGamerID($args['GamerId']);
                }

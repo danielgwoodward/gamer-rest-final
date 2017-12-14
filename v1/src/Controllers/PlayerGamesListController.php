@@ -20,8 +20,9 @@ class PlayerGamesListController
     public function buildPlayerGList($json){
         $buildPlayerGamesList = new PlayerGamesList();
 
-       // $role = Token::getRoleFromToken();
-      //  if($role == Token::ROLE_FACULTY) {
+
+       $role = Token::getRoleFromToken();
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->GameId) && isset($json->GamerId) && count((array)$json) == 2) {
                     if ($json->GameId != NULL && $json->GamerId != NULL) {
@@ -47,24 +48,27 @@ class PlayerGamesListController
                 return "Something went wrong";
             }
 
-        //}
-       // else{
-           // http_response_code(StatusCodes::FORBIDDEN);
 
-        //}
+        }
+        else{
+            http_response_code(StatusCodes::FORBIDDEN);
+
+        }
     }
 
     public function updatePlayerGList($json){
         $updatePlayerGamesList = new PlayerGamesList();
 
-        //$role = Token::getRoleFromToken();
-        //if($role == Token::ROLE_FACULTY) {
+
+        $role = Token::getRoleFromToken();
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->GameId) && isset($json->GamerId) && count((array)$json) == 2) {
                     if ($json->GameId != NULL && $json->GamerId != NULL) {
 
                         $updatePlayerGamesList->updatePlayerGList($json->GamerId, $json->GameId);
-                        http_response_code(StatusCodes::CREATED);
+
+                        http_response_code(StatusCodes::OK);
                         echo "Added to the Database\n";
                         return $json;
                     }
@@ -85,11 +89,12 @@ class PlayerGamesListController
             }
 
         }
-       // else{
-           // http_response_code(StatusCodes::FORBIDDEN);
 
-       // }
-    //}
+        else{
+            http_response_code(StatusCodes::FORBIDDEN);
+
+        }
+    }
 
 
     public function getPlayerGList() {
@@ -118,17 +123,16 @@ class PlayerGamesListController
 
     public function deleteGamerByGamerID($args){
 
-        //$role = Token::getRoleFromToken();
-       // if($role == Token::ROLE_FACULTY) {
+
+        $role = Token::getRoleFromToken();
+        if($role == Token::ROLE_ADMIN) {
             $PlayerGList = new PlayerGamesList();
             return $PlayerGList->deletePlayerGList($args['GamerId'], $args['GameId']);
-       // }
-       // else {
-         //   http_response_code(StatusCodes::FORBIDDEN);
-       // }
+        }
+        else {
+            http_response_code(StatusCodes::FORBIDDEN);
+        }
 
     }
-
-
 
 }

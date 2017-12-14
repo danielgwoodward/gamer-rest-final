@@ -23,7 +23,8 @@ class testMatchHistory extends TestCase
     }
     public function testAdminNULLPUT() //Test Faculty with NULL PUT Body
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/match";
@@ -37,7 +38,8 @@ class testMatchHistory extends TestCase
     }
     public function testAdminNULLPOST() //Test Faculty with NULL POST Body
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/match";
@@ -51,7 +53,8 @@ class testMatchHistory extends TestCase
     }
     public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = array(
             "EXTRA" => "NODONTDOTHAT",
             "GamerTag"=> "TheSpicyNoodle",
@@ -73,7 +76,8 @@ class testMatchHistory extends TestCase
 
     public function testAdminPost() //Admin should be able to POST
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = array(
             "AwayTeamId"=>"1",
             "HomeTeamId"=>"2",
@@ -93,14 +97,15 @@ class testMatchHistory extends TestCase
 
     public function testAdminPut() //Admin should be able to POST
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = array(
 
                  "MatchId"=>"2",
                  "AwayTeamId"=>"1",
                  "HomeTeamId"=>"2",
                  "MatchDate"=>"2017/12/12",
-                 "WinningTeamId"=>"2"
+                 "WinningTeamId"=>"1"
 
         );
         $body = json_encode($json);
@@ -111,12 +116,13 @@ class testMatchHistory extends TestCase
             $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
         }
         $this->assertNotFalse($output);
-        $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
 
     public function testGetMatchId() {
 
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/match/2";
@@ -135,7 +141,8 @@ class testMatchHistory extends TestCase
 
     public function testGetAllGamers()
     {
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/match";
@@ -155,7 +162,8 @@ class testMatchHistory extends TestCase
 
     public function testDeleteGamerId() {
 
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/match/admin/2";

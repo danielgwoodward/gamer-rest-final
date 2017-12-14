@@ -24,7 +24,8 @@ class testGamers extends TestCase {
 
     public function testAdminNULLPUT() //Test Faculty with NULL PUT Body
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/gamers";
@@ -39,7 +40,8 @@ class testGamers extends TestCase {
 
     public function testAdminNULLPOST() //Test Faculty with NULL POST Body
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/gamers";
@@ -54,7 +56,8 @@ class testGamers extends TestCase {
 
     public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = array(
                 "EXTRA" => "NODONTDOTHAT",
                 "GamerTag"=> "TheSpicyNoodle",
@@ -76,7 +79,8 @@ class testGamers extends TestCase {
 
     public function testAdminPost() //Admin should be able to POST
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = array(
             "GamerTag"=> "TheSpicy",
             "TeamId" => "1",
@@ -96,7 +100,8 @@ class testGamers extends TestCase {
 
     public function testAdminPut() //Admin should be able to POST
     {
-        $token = $this->generateToken('genericfac', 'Hello896');
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $json = array(
             "GamerId"=> "8",
             "GamerTag"=> "TheSpiciestNoodle",
@@ -112,12 +117,13 @@ class testGamers extends TestCase {
             $this->assertEmpty($err->getMessage(), "Error message: ". $err->getMessage());
         }
         $this->assertNotFalse($output);
-        $this->assertEquals(StatusCodes::CREATED, Testing::getLastHTTPResponseCode());
+        $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
 
     public function testGetGamerId() {
 
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/gamers/10";
@@ -136,7 +142,8 @@ class testGamers extends TestCase {
 
     public function testGetAllGamers()
     {
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/gamers";
@@ -156,7 +163,8 @@ class testGamers extends TestCase {
 
     public function testDeleteGamerId() {
 
-        $token = $this->generateToken("genericfac", "Hello896");
+        $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/gamers/admin/10";

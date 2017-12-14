@@ -9,6 +9,7 @@
 namespace Gamer\Models;
 
 use Gamer\Utilities\DatabaseConnection;
+use PHPUnit\Runner\Exception;
 
 
 class PlayerGamesList  implements \JsonSerializable
@@ -33,20 +34,20 @@ class PlayerGamesList  implements \JsonSerializable
 
 
     public function init(int $GamerId, int $GameId){
+      
+    $this->GamerId = $GamerId;
+    $this->GameId = $GameId;
 
-
-        $this->GamerId = $GamerId;
-        $this->GameId = $GameId;
-
-        $dbh = DatabaseConnection::getInstance();
-        $stmtCreate = $dbh->prepare("INSERT INTO `gamer_api`.`PlayerGamesList`(GamerId,GameId)
+    $dbh = DatabaseConnection::getInstance();
+    $stmtCreate = $dbh->prepare("INSERT INTO `gamer_api`.`PlayerGamesList`(GamerId,GameId)
         VALUES(:GamerId, :GameId)");
 
 
-        $stmtCreate->bindParam(":GamerId", $GamerId);
-        $stmtCreate->bindParam(":GameId", $GameId);
+    $stmtCreate->bindParam(":GamerId", $GamerId);
+    $stmtCreate->bindParam(":GameId", $GameId);
 
-        $stmtCreate->execute();
+    $stmtCreate->execute();
+
     }
 
     public function updatePlayerGList(int $GamerId, int $GameId){

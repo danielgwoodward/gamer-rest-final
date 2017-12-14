@@ -173,7 +173,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r)  
         $playerglist = $playerglistController->deleteGamerByGamerID($args);
         return $playerglist;
     };
-=======
+
     /** ALL Teams Functions */
 
 
