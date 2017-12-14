@@ -13,6 +13,7 @@ use Firebase\JWT\ExpiredException;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
 use Gamer\Http\StatusCodes;
+use Gamer\Utilities\DatabaseConnection;
 use PHPUnit\Runner\Exception;
 
 class Token
@@ -79,7 +80,7 @@ class Token
             return "Not Authorized";
         }
 
-        return buildToken($role, $username);
+        return $this->buildToken($role, $username);
     }
 
     private static function extractTokenData($jwt)
