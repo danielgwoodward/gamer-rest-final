@@ -12,14 +12,13 @@ use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
-use Gamer\Http\{
-    StatusCodes
-};
+use Gamer\Http\StatusCodes;
+use PHPUnit\Runner\Exception;
 
 class Token
 {
-    const ROLE_STUDENT = "Student";
-    const ROLE_FACULTY = "Faculty";
+    const ROLE_USER = "USER";
+    const ROLE_ADMIN = "ADMIN";
     private static $KEY = "cdf97907258bb76aebaa7d435992f6b94f6f8886de4d725036e38cc17420625dc23fc2856519a1b51937ce89502cbb309b3501dd3908b4ff0966ff49c8747dfc";   //TODO: Extract key to config file that is loaded on-run.
     private static $lengthValid = 3600; // 1 Hour
 
@@ -75,8 +74,10 @@ class Token
 
     public static function getRoleFromToken($jwt = null)
     {
-        if ($jwt == null)
+        if ($jwt == null) {
             $jwt = self::getBearerTokenFromHeader();
+            $jwt = json_decode($jwt);
+        }
         $tokenData = static::extractTokenData($jwt);
         $data = (array)$tokenData['data'];
         return $data['role'];
@@ -93,7 +94,6 @@ class Token
     private static function getBearerTokenFromHeader()
     {
         $headers = apache_request_headers();
-
         if (!isset($headers)) {
             http_response_code(StatusCodes::BAD_REQUEST);
             exit("No headers set.");
@@ -113,7 +113,6 @@ class Token
             http_response_code(StatusCodes::UNAUTHORIZED);
             exit("No credentials provided.");
         }
-
         return $jwt;
     }
 }

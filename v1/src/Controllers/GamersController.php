@@ -11,6 +11,7 @@ namespace Gamer\Controllers;
 use Gamer\Models\Gamer;
 use \Gamer\Models\Token as Token;
 use \Gamer\Http\StatusCodes;
+use PHPUnit\Runner\Exception;
 
 
 class GamersController
@@ -20,7 +21,7 @@ class GamersController
         $buildGamer = new Gamer();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->GamerTag) && isset($json->TeamId) && isset($json->MainGamePlayedId) && isset($json->Rank) &&  count((array)$json) == 4) {
                     if ($json->GamerTag != NULL) {
@@ -48,8 +49,8 @@ class GamersController
 
         }
         else{
-            http_response_code(StatusCodes::UNAUTHORIZED);
-            return 'You do not have authorization';
+            http_response_code(StatusCodes::FORBIDDEN);
+
         }
     }
 
@@ -57,13 +58,13 @@ class GamersController
         $updateGamer = new Gamer();
 
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+        if($role == Token::ROLE_ADMIN) {
             try {
                 if (isset($json->GamerId) && isset($json->GamerTag) && isset($json->TeamId) && isset($json->MainGamePlayedId) && isset($json->Rank) &&  count((array)$json) == 5) {
                     if ($json->GamerId != NULL && $json->GamerTag != NULL) {
 
-                        $updateGamer->updateAward($json->GamerId, $json->GamerTag, $json->TeamId, $json->MainGamePlayedId, $json->Rank);
-                        http_response_code(StatusCodes::CREATED);
+                        $updateGamer->updateGamer($json->GamerId, $json->GamerTag, $json->TeamId, $json->MainGamePlayedId, $json->Rank);
+                        http_response_code(StatusCodes::OK);
                         echo "Gamer Updated\n";
                         return $json;
                     }
@@ -85,44 +86,44 @@ class GamersController
 
         }
         else{
-            http_response_code(StatusCodes::UNAUTHORIZED);
-            return 'You do not have authorization';
+            http_response_code(StatusCodes::FORBIDDEN);
         }
     }
 
     public function getAllGamers() {
-        $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY) {
+      try{
             return Gamer::getAllGamers();
-        }
-        else {
-            http_response_code(StatusCodes::UNAUTHORIZED);
-            return "Not an Administrator";
-        }
+      }
+      catch(Exception $e) {
+          http_response_code(StatusCodes::BAD_REQUEST);
+          return "Sorry something went wrong";
+      }
+
     }
 
     public function getGamerByGamerID($args){
-        $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY){
 
-            return Gamer::getGamerByGamerID($args['GamerId']);
-        }
-        else {
-            http_response_code(StatusCodes::UNAUTHORIZED);
-            return "Not an Administrator";
-        }
+          try {
+              $Gamer = new Gamer();
+              return $Gamer->getGamerByGamerID($args['GamerId']);
+          }
+          catch(Exception $e) {
+                  http_response_code(StatusCodes::BAD_REQUEST);
+                  return "Sorry something went wrong";
+              }
+
     }
 
     public function deleteGamerByGamerID($args){
+
         $role = Token::getRoleFromToken();
-        if($role == Token::ROLE_FACULTY){
+        if($role == Token::ROLE_ADMIN) {
+            $Gamer = new Gamer();
+                  return $Gamer->deleteGamerByGamerID($args['GamerId']);
+               }
+               else {
+            http_response_code(StatusCodes::FORBIDDEN);
+        }
 
-            return Gamer::deleteGamerByGamerID($args['GamerId']);
-        }
-        else {
-            http_response_code(StatusCodes::UNAUTHORIZED);
-            return "Not an Administrator";
-        }
     }
-
 }

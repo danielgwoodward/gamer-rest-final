@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Dan
- * Date: 12/10/17
- * Time: 5:12 PM
+ * Date: 12/11/17
+ * Time: 4:25 PM
  */
 
 namespace Gamer\Testing;
@@ -14,21 +14,20 @@ use \PHPUnit\Framework\TestCase;
 use \Gamer\Http\StatusCodes;
 use Gamer\Utilities\Testing;
 
-class testGamers extends TestCase {
-
+class testMatchHistory extends TestCase
+{
     private function generateToken($username, $password)
     {
         $tokenController = new TokensController();
         return $tokenController->buildToken($username, $password);
     }
-
     public function testAdminNULLPUT() //Test Faculty with NULL PUT Body
     {
         $token = $this->generateToken('Admin', 'Admin');
         $token = "\"" . $token . "\"";
         $json = NULL;
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/match";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::PUT, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -37,14 +36,13 @@ class testGamers extends TestCase {
         $this->assertNotFalse($output);
         $this->assertEquals(StatusCodes::BAD_REQUEST, Testing::getLastHTTPResponseCode());
     }
-
     public function testAdminNULLPOST() //Test Faculty with NULL POST Body
     {
         $token = $this->generateToken('Admin', 'Admin');
         $token = "\"" . $token . "\"";
         $json = NULL;
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/match";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -53,17 +51,16 @@ class testGamers extends TestCase {
         $this->assertNotFalse($output);
         $this->assertEquals(StatusCodes::BAD_REQUEST, Testing::getLastHTTPResponseCode());
     }
-
     public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
     {
         $token = $this->generateToken('Admin', 'Admin');
         $token = "\"" . $token . "\"";
         $json = array(
-                "EXTRA" => "NODONTDOTHAT",
-                "GamerTag"=> "TheSpicyNoodle",
-                "TeamId" => "1",
-                "MainGamePlayedId" => "1",
-                "Rank" =>"Gold"
+            "EXTRA" => "NODONTDOTHAT",
+            "GamerTag"=> "TheSpicyNoodle",
+            "TeamId" => "1",
+            "MainGamePlayedId" => "1",
+            "Rank" =>"Gold"
 
         );
         $body = json_encode($json);
@@ -82,13 +79,13 @@ class testGamers extends TestCase {
         $token = $this->generateToken('Admin', 'Admin');
         $token = "\"" . $token . "\"";
         $json = array(
-            "GamerTag"=> "TheSpicy",
-            "TeamId" => "1",
-            "MainGamePlayedId" => "1",
-            "Rank" =>"Challenger"
+            "AwayTeamId"=>"1",
+            "HomeTeamId"=>"2",
+            "MatchDate"=>"2017/12/12",
+            "WinningTeamId"=>"2"
         );
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/match";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::POST, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -103,14 +100,16 @@ class testGamers extends TestCase {
         $token = $this->generateToken('Admin', 'Admin');
         $token = "\"" . $token . "\"";
         $json = array(
-            "GamerId"=> "8",
-            "GamerTag"=> "TheSpiciestNoodle",
-            "TeamId" => "1",
-            "MainGamePlayedId" => "1",
-            "Rank" =>"Challenger"
+
+                 "MatchId"=>"2",
+                 "AwayTeamId"=>"1",
+                 "HomeTeamId"=>"2",
+                 "MatchDate"=>"2017/12/12",
+                 "WinningTeamId"=>"1"
+
         );
         $body = json_encode($json);
-        $endpoint = "/gamers";
+        $endpoint = "/match";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::PUT, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -120,13 +119,13 @@ class testGamers extends TestCase {
         $this->assertEquals(StatusCodes::OK, Testing::getLastHTTPResponseCode());
     }
 
-    public function testGetGamerId() {
+    public function testGetMatchId() {
 
         $token = $this->generateToken('Admin', 'Admin');
         $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers/10";
+        $endpoint = "/match/2";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -146,7 +145,7 @@ class testGamers extends TestCase {
         $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers";
+        $endpoint = "/match";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
@@ -167,7 +166,7 @@ class testGamers extends TestCase {
         $token = "\"" . $token . "\"";
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/gamers/admin/10";
+        $endpoint = "/match/admin/2";
 
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::DELETE, $body, $token, Testing::JSON);
@@ -180,4 +179,7 @@ class testGamers extends TestCase {
 
 
     }
+
+
+
 }
