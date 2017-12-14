@@ -57,7 +57,7 @@ class GamesController
                     if ($json->GameId != NULL && $json->GameName != NULL) {
 
                         $updateGame->updateGame($json->GameId, $json->GameName, $json->GameESRBRating, $json->GameCompany, $json->PlayerCount, $json->CreateYear);
-                        http_response_code(StatusCodes::CREATED);
+                        http_response_code(StatusCodes::OK);
                     }
                     else {
                         http_response_code(StatusCodes::BAD_REQUEST);

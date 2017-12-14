@@ -6,7 +6,7 @@
  * Time: 10:50 AM
  */
 
-namespace Games\Testing;
+namespace Gamer\Testing;
 
 use Gamer\Controllers\TokensController;
 use Gamer\Http\Methods;
@@ -25,6 +25,7 @@ class testGames extends TestCase {
     public function testAdminNULLPUT() //Test Faculty with NULL PUT Body
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/games";
@@ -40,6 +41,7 @@ class testGames extends TestCase {
     public function testAdminNULLPOST() //Test Faculty with NULL POST Body
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/games";
@@ -55,12 +57,13 @@ class testGames extends TestCase {
     public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = array(
             "EXTRA" => "NODONTDOTHAT",
-            "GameName"=> "1",
+            "GameName"=> 1,
             "GameCompany" => "MyNoodles",
             "GameESRBRating" => "T",
-            "PlayerCount" =>"100",
+            "PlayerCount" =>100,
             "CreateYear" => "2017"
         );
         $body = json_encode($json);
@@ -77,6 +80,7 @@ class testGames extends TestCase {
     public function testAdminPost() //Admin should be able to POST
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = array(
             "GameName"=> 1,
             "GameCompany" => "MyNoodles",
@@ -100,12 +104,13 @@ class testGames extends TestCase {
     public function testAdminPut() //Admin should be able to PUT
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = array(
-            "GameId"=> "1",
-            "GameName"=> "1",
+            "GameId"=> 1,
+            "GameName"=> 1,
             "GameCompany" => "MyNoodles",
             "GameESRBRating" => "T",
-            "PlayerCount" =>"100",
+            "PlayerCount" => 100,
             "CreateYear" => "2017"
         );
         $body = json_encode($json);
@@ -122,6 +127,7 @@ class testGames extends TestCase {
     public function testGetGameId() {
 
         $token = $this->generateToken("Admin", "Admin");
+        $token = "\"".$token."\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/games/1";
@@ -140,10 +146,10 @@ class testGames extends TestCase {
     public function testGetAllGames()
     {
         $token = $this->generateToken("Admin", "Admin");
+        $token = "\"".$token."\"";
         $body_contents = array();
         $body = json_encode($body_contents);
-        $endpoint = "/games/";
-
+        $endpoint = "/games";
         try {
             $output = Testing::callAPIOverHTTP($endpoint, Methods::GET, $body, $token, Testing::JSON);
         } catch (\Exception $err) {
@@ -160,6 +166,7 @@ class testGames extends TestCase {
     public function testDeleteGameId() {
 
         $token = $this->generateToken("User", "User");
+        $token = "\"".$token."\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/games/admin/10";

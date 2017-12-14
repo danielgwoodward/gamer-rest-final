@@ -6,7 +6,7 @@
  * Time: 10:02 AM
  */
 
-namespace Team\Testing;
+namespace Gamer\Testing;
 
 use Gamer\Controllers\TokensController;
 use Gamer\Http\Methods;
@@ -25,6 +25,7 @@ class testTeams extends TestCase {
     public function testAdminNULLPUT() //Test Faculty with NULL PUT Body
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/teams";
@@ -40,6 +41,7 @@ class testTeams extends TestCase {
     public function testAdminNULLPOST() //Test Faculty with NULL POST Body
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = NULL;
         $body = json_encode($json);
         $endpoint = "/teams";
@@ -55,6 +57,7 @@ class testTeams extends TestCase {
     public function testAdminPOSTMoreAttributes() //Test Admin POST with more than 4 Fields in the array
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = array(
             "EXTRA" => "NODONTDOTHAT",
             "TeamName"=> "TheSpicyNoodles",
@@ -77,6 +80,7 @@ class testTeams extends TestCase {
     public function testAdminPost() //Admin should be able to POST
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = array(
             "TeamName"=> "TheSpicyNoodles",
             "TeamOwner" => "1",
@@ -99,6 +103,7 @@ class testTeams extends TestCase {
     public function testAdminPut() //Admin should be able to PUT
     {
         $token = $this->generateToken('Admin', 'Admin');
+        $token = "\"".$token."\"";
         $json = array(
             "TeamId"=> "1",
             "TeamName"=> "TheSpicyNoodles",
@@ -121,6 +126,7 @@ class testTeams extends TestCase {
     public function testGetTeamId() {
 
         $token = $this->generateToken("User", "User");
+        $token = "\"".$token."\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/teams/1";
@@ -139,6 +145,7 @@ class testTeams extends TestCase {
     public function testGetAllTeams()
     {
         $token = $this->generateToken("User", "User");
+        $token = "\"".$token."\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/teams";
@@ -159,6 +166,7 @@ class testTeams extends TestCase {
     public function testDeleteGamerId() {
 
         $token = $this->generateToken("User", "User");
+        $token = "\"".$token."\"";
         $body_contents = array();
         $body = json_encode($body_contents);
         $endpoint = "/teams/admin/10";

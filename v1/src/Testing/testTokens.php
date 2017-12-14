@@ -6,7 +6,7 @@
  * Time: 8:18 PM
  */
 
-namespace Games\Testing;
+namespace Gamer\Testing;
 
 use Gamer\Controllers\TokensController;
 use Gamer\Http\Methods;
